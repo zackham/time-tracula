@@ -1,0 +1,7 @@
+%h1 Categories
+
+= form_for(Category.new, :action => url(:categories) ) do
+  %p
+    Name 
+    = text_field :name
+    = submit 'Add category'

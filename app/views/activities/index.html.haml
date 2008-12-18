@@ -1,0 +1,32 @@
+#menu-opts
+  = link_to 'Toggle more options', '#', :onclick => %($('.opts').toggle())
+
+%h1= link_to 'Time Tracula', resource(:activities)
+
+%table#activities
+  %tbody
+    = partial :activities 
+  
+  = form_for( Activity.new, :action => url(:activities) ) do      
+    %tr
+      %td= select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+      %td= text_field :blurb
+      %td
+        = check_box :name => :clock_in, :checked => true 
+        clock in
+      %td
+      %td
+      %td
+      %td= submit 'Add'
+
+%hr/
+
+= link_to_function 'Toggle category tools', %($('#category-tools').toggle())
+
+#category-tools{:style => 'display:none'}
+  = partial 'categories/tools'
+
+
+
+
+

@@ -1,0 +1,19 @@
+- for activity in @activities
+  %tr
+    %td= activity.category.name
+    %td= activity.blurb
+    %td
+      - if activity.time_in
+        = activity.time_in.formatted(:mytime)
+      - else
+        %input{:type => :button, :value => 'clock in', :onclick => "Activities.clock_in(#{activity.id})"}/
+    %td 
+      - if activity.time_out
+        = activity.time_out.formatted(:mytime)
+      - elsif activity.time_in
+        %input{:type => :button, :value => 'clock out', :onclick => "Activities.clock_out(#{activity.id})"}/
+    %td
+      = link_to_function( 'unclock', "Activities.unclock(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) if activity.time_in
+    %td
+    %td
+      = link_to_function( 'del', "Activities.delete(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) #, :onclick => %[return confirm('You sure?')] )

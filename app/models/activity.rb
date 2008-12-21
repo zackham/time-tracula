@@ -6,7 +6,7 @@ class Activity
   property :time_in, DateTime
   property :category_id, Integer
   property :time_out, DateTime
-  property :blurb, String
+  property :blurb, Text
 
   belongs_to :category
   
@@ -14,8 +14,7 @@ class Activity
   def self.today
     all(
       :conditions => ['time_in > ? OR time_in IS NULL', Date.today]
-    ).sort! {|a,b| 
-      
+    ).sort {|a,b| 
       # clocked out items go on the bottom of the list, sorted descending
       if a.time_out or b.time_out
         if a.time_out && b.time_out

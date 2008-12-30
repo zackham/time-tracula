@@ -2,7 +2,7 @@ class Activities < Application
   def index
     @js_includes << 'activities.js'
     
-    @activities = Activity.today
+    set_activities
     display @activities
   end
   
@@ -33,9 +33,30 @@ class Activities < Application
   end
   
   private
-    def show_all
-      if request.xhr?
-        @activities = Activity.today
+    def set_activities
+      activities = Activity.today
+      
+      # determine if two activities belong in same group
+      same_group = proc { |a, b|
+        a.complete? && b.complete? || 
+          a.in_progress? && b.in_progress? ||
+          !a.started? && !b.started? && a.category_id == b.category_id
+      }
+      
+      # grouping activities into clocked in, unclocked groups of categories, and clocked out
+      @activities = [[]]
+      for activity in activities
+        if @activities.last.empty? 
+          @activities.last << activity 
+        else
+          same_group.call(@activities.last.last, activity) ? @activities.last << activity : @activities << [activity]
+        end
+      end
+    end
+    
+    def show_all      
+      if request.xhr?       
+        set_activities 
         partial :activities
       else
         redirect resource(:activities)

@@ -1,23 +1,18 @@
 #menu-opts
-  = link_to 'Toggle more options', '#', :onclick => %($('.opts').toggle())
-
+  = link_to_function 'Toggle more options', %($('.opts').toggle())
 %h1= link_to 'Time Tracula', resource(:activities)
 
-%table#activities
-  %tbody
+#activities
+  #activities_list
     = partial :activities 
   
+
   = form_for( Activity.new, :action => url(:activities) ) do      
-    %tr
-      %td= select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
-      %td= text_field :blurb
-      %td
-        = check_box :name => :clock_in, :checked => true 
-        clock in
-      %td
-      %td
-      %td
-      %td= submit 'Add'
+    = select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+    = text_field :blurb
+    = check_box :name => :clock_in, :checked => true 
+    clock in
+    = submit 'Add'
 
 %hr/
 

@@ -1,19 +1,52 @@
-- for activity in @activities
-  %tr
-    %td= activity.category.name
-    %td= activity.blurb
-    %td
-      - if activity.time_in
-        = activity.time_in.formatted(:mytime)
-      - else
-        %input{:type => :button, :value => 'clock in', :onclick => "Activities.clock_in(#{activity.id})"}/
-    %td 
-      - if activity.time_out
-        = activity.time_out.formatted(:mytime)
-      - elsif activity.time_in
-        %input{:type => :button, :value => 'clock out', :onclick => "Activities.clock_out(#{activity.id})"}/
-    %td
-      = link_to_function( 'unclock', "Activities.unclock(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) if activity.time_in
-    %td
-    %td
-      = link_to_function( 'del', "Activities.delete(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) #, :onclick => %[return confirm('You sure?')] )
+- last = nil
+- every_other = false
+
+%table
+  - for activity_group in @activities
+    - tbody_id = if activity_group.first.in_progress?
+      - 'in_progress'
+    - elsif activity_group.first.complete?
+      - 'complete'
+    - else
+      - "unclocked-#{activity_group.first.category_id}"
+    
+    - if tbody_id =~ /^unclocked/
+      %tbody{:id => "#{tbody_id}-title"}
+        %tr
+          %td{:colspan => 8}
+            = activity_group.first.category.name
+            == (#{activity_group.size} items - click to expand)
+    %tbody{:id => tbody_id, :class => ('unclocked' if tbody_id =~ /^unclocked/) }
+      - for activity in activity_group
+        - if last && last.complete? && activity.complete? && (last.time_in - activity.time_out) * 86400 > 5.minutes
+          - every_other = !every_other
+          %tr.context_switch
+            %td{:colspan => 4, :style => 'text-align:center'} context switch
+            %td{:colspan => 4}= time_ago_in_words(last.time_in, activity.time_out) 
+    
+        - every_other = !every_other
+        - classes = []
+        - classes << 'odd' if every_other
+        - classes << 'unclocked' unless activity.started?
+
+
+        %tr{:class => classes.join(' ')}
+          %td= activity.category.name
+          %td= activity.blurb
+          %td
+            - if activity.time_in
+              = activity.time_in.formatted(:mytime)
+            - else
+              %input{:type => :button, :value => 'clock in', :onclick => "Activities.clock_in(#{activity.id})"}/
+          %td 
+            - if activity.time_out
+              = activity.time_out.formatted(:mytime)
+            - elsif activity.time_in
+              %input{:type => :button, :value => 'clock out', :onclick => "Activities.clock_out(#{activity.id})"}/
+          %td= time_ago_in_words(activity.time_out, activity.time_in) if activity.complete?
+          %td
+            = link_to_function( 'unclock', "Activities.unclock(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) if activity.time_in
+          %td
+          %td
+            = link_to_function( 'del', "Activities.delete(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) #, :onclick => %[return confirm('You sure?')] )
+        - last = activity

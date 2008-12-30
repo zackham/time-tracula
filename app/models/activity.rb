@@ -10,6 +10,22 @@ class Activity
 
   belongs_to :category
   
+  def complete?
+    time_in && time_out
+  end
+  
+  def started?
+    ! time_in.nil?
+  end
+  
+  def in_progress?
+    time_in && time_out.nil?
+  end
+  
+  def elapsed
+    time_out - time_in
+  end
+  
   # i'm picky about the sorting so it is somewhat complex and verbose.  i don't know how to accomplish this in SQL so i'm doing it in ruby.
   def self.today
     all(
@@ -23,10 +39,10 @@ class Activity
           a.time_out ? 1 : -1
         end
         
-      # unclocked items go in the middle of the list, sorted by id desc
+      # unclocked items go in the middle of the list, sorted by category id asc
       elsif a.time_in.nil? or b.time_in.nil?
         if a.time_in.nil? && b.time_in.nil?
-          b.id <=> a.id
+          a.category_id <=> b.category_id
         else
           a.time_in.nil? ? 1 : -1
         end

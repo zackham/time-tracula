@@ -7,3 +7,8 @@ h1 { font-size: 2em; margin-bottom: 0.3em; }
 td { padding: 3px; }
 
 #menu-opts { float: right; }
+
+#activities tr.odd { background-color: #eee; }
+#activities tr.context_switch { background-color: #ffbbbb; }
+
+tbody.unclocked { display: none; }

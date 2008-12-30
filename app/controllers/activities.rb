@@ -44,13 +44,9 @@ class Activities < Application
       }
       
       # grouping activities into clocked in, unclocked groups of categories, and clocked out
-      @activities = [[]]
+      @activities = []
       for activity in activities
-        if @activities.last.empty? 
-          @activities.last << activity 
-        else
-          same_group.call(@activities.last.last, activity) ? @activities.last << activity : @activities << [activity]
-        end
+        ( !@activities.empty? && same_group.call(@activities.last.last, activity) ) ? @activities.last << activity : @activities << [activity]
       end
     end
     

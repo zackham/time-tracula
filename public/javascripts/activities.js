@@ -31,11 +31,15 @@ $(document).ready(function() {
       $('#activity_blurb')[0].focus();
     }});
   
-  $('#activities_list tbody[id^=unclocked] > tr > td:first-child').livequery('click', function() {
-    var tmp = $(this).parents('tbody')[0];
-    var tbody = /-title$/.test(tmp.id) ? $(tmp).next()[0] : tmp;
-    var tbody_title = $(tbody).prev()[0];
-    $(tbody).toggle();
-    $(tbody_title).toggle();
+  $('#activities_list tbody[id^=unclocked] > tr > td:first-child').livequery(function() {
+    $(this).addClass('clickable')
+  
+    $(this).bind('click', function() {
+      var tmp = $(this).parents('tbody')[0];
+      var tbody = /-title$/.test(tmp.id) ? $(tmp).next()[0] : tmp;
+      var tbody_title = $(tbody).prev()[0];
+      $(tbody).toggle();
+      $(tbody_title).toggle();
+    });
   });
 });

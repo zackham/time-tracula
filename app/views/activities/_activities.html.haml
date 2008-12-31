@@ -13,9 +13,10 @@
     - if tbody_id =~ /^unclocked/
       %tbody{:id => "#{tbody_id}-title"}
         %tr
-          %td{:colspan => 8}
+          %td
+            == [ + #{activity_group.size} ]
+          %td{:colspan => 7}
             = activity_group.first.category.name
-            == (#{activity_group.size} items - click to expand)
     %tbody{:id => tbody_id, :class => ('unclocked' if tbody_id =~ /^unclocked/) }
       - for activity in activity_group
         - if last && last.complete? && activity.complete? && (last.time_in - activity.time_out) * 86400 > 5.minutes

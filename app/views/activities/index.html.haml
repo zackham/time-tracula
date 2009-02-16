@@ -2,6 +2,16 @@
   = link_to_function 'Toggle more options', %($('.opts').toggle())
 %h1= link_to 'Time Tracula', resource(:activities)
 
+- unless @plans.empty?
+  #plans
+    #plans_list
+      = partial 'plans/list'
+
+- unless @goals.empty?
+  #goals
+    #goals_list
+      = partial 'goals/list'
+
 #activities
   #activities_list
     = partial :activities 
@@ -13,15 +23,45 @@
     = check_box :name => :clock_in, :checked => true 
     clock in
     = submit 'Add'
+  
+
+#plan-form
+  = form_for( Plan.new, :action => url(:plans) ) do
+    %p
+      I plan to 
+      = select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+      = text_field :blurb
+      today.
+      = submit 'go'
+
+#goal-form
+  = form_for(Goal.new, :action => url(:goals) ) do
+    %p
+      Goal to work on 
+      = select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+      for
+      = text_field :duration_hours
+      hours today.
+      = submit 'go'
 
 %hr/
 
 = link_to_function 'Toggle category tools', %($('#category-tools').toggle())
+%br/
+= link_to_function 'Toggle goal tools', %($('#goal-tools').toggle())
+%br/
+= link_to_function 'Toggle plan tools', %($('#plan-tools').toggle())
 
 #category-tools{:style => 'display:none'}
   = partial 'categories/tools'
 
+#goal-tools{:style => 'display:none'}
+  = partial 'goals/tools'
 
+#plan-tools{:style => 'display:none'}
+  = partial 'plans/tools'
 
-
-
+#show-by-category
+  Show by category
+  - Category.all.each do |category|
+    = link_to category, resource(category, :activities)

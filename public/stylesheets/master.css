@@ -3,11 +3,29 @@ h1 {
   font-size: 2em;
   margin-bottom: 0.3em; }
 
+h2 {
+  font-size: 1.6em;
+  margin-bottom: 0.2em; }
+
 td {
   padding: 3px; }
 
 #menu-opts {
   float: right; }
+
+#plans {
+  border: 1px dashed #868686;
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px; }
+
+#goals {
+  border: 1px dashed #868686;
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px; }
 
 #activities .clickable {
   cursor: pointer; }
@@ -15,6 +33,13 @@ td {
   background-color: #eee; }
 #activities tr.context_switch {
   background-color: #ffbbbb; }
+#activities input {
+  border: 1px solid #868686; }
 
 tbody.unclocked {
   display: none; }
+
+.editable {
+  color: #868686;
+  font-weight: bold;
+  cursor: pointer; }

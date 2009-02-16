@@ -1,0 +1,9 @@
+%h1 Goals
+= form_for(Goal.new, :action => url(:goals) ) do
+  %p
+    Goal to work on 
+    = select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+    for
+    = text_field :duration_hours
+    hours today.
+    = submit 'go'

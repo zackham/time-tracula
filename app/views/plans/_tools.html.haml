@@ -1,0 +1,8 @@
+%h1 Plans
+= form_for(Plan.new, :action => url(:plans) ) do
+  %p
+    I plan to 
+    = select( :category_id, :collection => Category.all, :text_method => :name, :value_method => :id )
+    = text_field :blurb
+    today.
+    = submit 'go'

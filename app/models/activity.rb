@@ -2,13 +2,14 @@ class Activity
   include DataMapper::Resource
   
   property :id, Serial
-
-  property :time_in, DateTime
+  
   property :category_id, Integer
+  property :time_in, DateTime
   property :time_out, DateTime
   property :blurb, Text
 
   belongs_to :category
+   
   
   def complete?
     time_in && time_out
@@ -23,14 +24,28 @@ class Activity
   end
   
   def elapsed
-    time_out - time_in
+    in_progress? ? (DateTime.now - time_in) : (time_out - time_in)
+  end
+  
+  def elapsed_minutes
+    elapsed * 1440.0
+  end
+  
+  def to_s
+    blurb
+  end
+  
+  def self.started
+    all(:conditions => ['time_in IS NOT NULL'])
+  end
+  
+  def self.today
+    all(:conditions => ['time_in > ? OR time_in IS NULL', Date.today])
   end
   
   # i'm picky about the sorting so it is somewhat complex and verbose.  i don't know how to accomplish this in SQL so i'm doing it in ruby.
-  def self.today
-    all(
-      :conditions => ['time_in > ? OR time_in IS NULL', Date.today]
-    ).sort {|a,b| 
+  def self.today_sorted
+    today.sort {|a,b| 
       # clocked out items go on the bottom of the list, sorted descending
       if a.time_out or b.time_out
         if a.time_out && b.time_out

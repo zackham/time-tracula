@@ -34,7 +34,7 @@ class Activities < Application
   
   private
     def set_activities
-      activities = Activity.today
+      activities = Activity.today_sorted
       
       # determine if two activities belong in same group
       same_group = proc { |a, b|
@@ -48,6 +48,12 @@ class Activities < Application
       for activity in activities
         ( !@activities.empty? && same_group.call(@activities.last.last, activity) ) ? @activities.last << activity : @activities << [activity]
       end
+      
+      # set plans too
+      @plans = Plan.relevant
+      
+      # set goals as well!
+      @goals = Goal.relevant
     end
     
     def show_all      

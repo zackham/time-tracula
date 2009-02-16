@@ -1,0 +1,17 @@
+%h2 Goals for today
+%table
+  - for goal in @goals
+    %tr
+      %td= goal.category.name
+      %td
+        %div{:style => "width:300px;border:1px solid black;background-color:white"}
+          %div{:style => "width:#{[goal.completion_percentage * 3, 300].min}px;background-color:green;height:9px"}
+      %td== #{goal.completion_percentage.round}%
+      %td== #{'%.1f' % goal.completion_hours} / #{'%.1f' % goal.duration_hours} hours
+      %td
+        - if goal.completion_percentage >= 100
+          done
+        - else
+          = time_ago_in_words(Time.now, Time.now - (goal.duration - goal.completion).minutes)
+          left
+      %td= link_to_function( 'x', "Goals.delete(#{goal.id})", :class => 'opts' ) 

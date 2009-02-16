@@ -26,20 +26,20 @@
             %td{:colspan => 4}= time_ago_in_words(last.time_in, activity.time_out) 
     
         - every_other = !every_other
-        - classes = []
+        - classes = ['activity']
         - classes << 'odd' if every_other
         - classes << 'unclocked' unless activity.started?
 
 
         %tr{:class => classes.join(' ')}
-          %td= activity.category.name
-          %td= activity.blurb
-          %td
+          %td.activity-category= activity.category.name
+          %td.activity-blurb&= activity.blurb
+          %td.activity-time_in
             - if activity.time_in
               = activity.time_in.formatted(:mytime)
             - else
               %input{:type => :button, :value => 'clock in', :onclick => "Activities.clock_in(#{activity.id})"}/
-          %td 
+          %td.activity-time_out
             - if activity.time_out
               = activity.time_out.formatted(:mytime)
             - elsif activity.time_in

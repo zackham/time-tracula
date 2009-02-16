@@ -6,4 +6,9 @@ class Category
   property :name, String
 
   has n, :activities
+  has n, :plans
+  
+  def to_s
+    name
+  end
 end

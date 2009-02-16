@@ -7,4 +7,4 @@
     %link{ :href => "/stylesheets/master.css", :rel => "stylesheet", :media => "screen", :type => "text/css", :charset => "utf-8" }/
   %body
     = catch_content :for_layout
-    = js_include_tag *@js_includes
+    = js_include_tag *@js_includes unless @js_includes.nil? || @js_includes.empty?

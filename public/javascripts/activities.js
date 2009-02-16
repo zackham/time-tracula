@@ -23,7 +23,30 @@ var Activities = {
   }
 };
 
+var Plans = {
+  delete: function(id) { 
+    this.plans_body().load(
+      '/plans/' + id, 
+      {_method: 'delete'}
+    ); 
+  },
+
+  plans_body: function() { return $('#plans_list'); }
+};
+
+var Goals = {
+  delete: function(id) { 
+    this.goals_body().load(
+      '/goals/' + id, 
+      {_method: 'delete'}
+    ); 
+  },
+
+  goals_body: function() { return $('#goals_list'); }
+};
+
 $(document).ready(function() { 
+  // ready activities form
   $('#activities form').ajaxForm({
     target: Activities.activities_body(),
     success: function () {
@@ -31,6 +54,22 @@ $(document).ready(function() {
       $('#activity_blurb')[0].focus();
     }});
   
+  // ready plans form
+  $('#plan-form form').ajaxForm({
+    target: Plans.plans_body(),
+    success: function () {
+      $('#plan_blurb')[0].value = ''; 
+      $('#plan_blurb')[0].focus();
+    }});
+  
+  // ready goals form
+  $('#goal-form form').ajaxForm({
+    target: Goals.goals_body(),
+    success: function () {
+      $('#goal_duration_hours')[0].value = ''; 
+    }});
+  
+  // collapse/expand unclocked items
   $('#activities_list tbody[id^=unclocked] > tr > td:first-child').livequery(function() {
     $(this).addClass('clickable')
   
@@ -40,6 +79,25 @@ $(document).ready(function() {
       var tbody_title = $(tbody).prev()[0];
       $(tbody).toggle();
       $(tbody_title).toggle();
+    });
+  });
+  
+  
+  $('.activity-blurb').livequery(function() {
+    $(this).bind('mouseover', function() {
+      $(this).addClass('editable');
+    });
+    
+    $(this).bind('mouseout', function() {
+      $(this).removeClass('editable');
+    });
+    
+    $(this).bind('click', function() {
+      alert('click');
+      var input = $('<input type="text" name="activity[blurb]"/>').attr('value', $(this).text());
+      $(this).html(input);
+      $(this).mouseout().unbind('click').unbind('mouseover').unbind('mouseout');
+      input.focus();
     });
   });
 });

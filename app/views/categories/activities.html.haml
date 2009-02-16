@@ -1,0 +1,9 @@
+= @activities.inject(0) {|m,a| m + a.elapsed_minutes}
+
+%table
+  - for activity in @activities
+    %tr
+      %td= activity
+      %td= activity.time_in.formatted(:mytime)
+      %td= activity.time_out.formatted(:mytime)
+      %td= activity.elapsed_minutes

@@ -1,0 +1,7 @@
+%h2 Plans for today
+%table
+  - for plan in @plans
+    %tr
+      %td= plan.category.name
+      %td= plan.blurb
+      %td= link_to_function( 'x', "Plans.delete(#{plan.id})", :class => 'opts' ) #, :onclick => %[return confirm('You sure?')] )

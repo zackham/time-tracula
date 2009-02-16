@@ -28,7 +28,9 @@
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
   resources :activities, :member => {:clock_out => :get, :clock_in => :get, :unclock => :get}
-  resources :categories
+  resources :categories, :member => {:activities => :get}
+  resources :plans
+  resources :goals
   # RESTful routes
   # resources :posts
   

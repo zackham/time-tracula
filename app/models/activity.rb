@@ -39,6 +39,14 @@ class Activity
     all(:conditions => ['time_in IS NOT NULL'])
   end
   
+  def self.completed
+    all(:conditions => ['time_in IS NOT NULL AND time_out IS NOT NULL'])
+  end
+  
+  def self.all_on_day(date)
+    all(:conditions => ['time_in > ? AND time_in < ?', date, date + 1])
+  end
+  
   def self.today
     all(:conditions => ['time_in > ? OR time_in IS NULL', Date.today])
   end

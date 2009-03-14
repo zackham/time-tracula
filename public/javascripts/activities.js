@@ -1,11 +1,11 @@
 var Activities = {
   clock_in: function(id) { this.member_action(id, 'clock_in'); }, 
   
-  clock_out: function(id) { this.member_action(id, 'clock_out'); },
+  clock_out: function(id) { this.member_action(id, 'clock_out'); Goals.goals_body().load('/goals'); },
   
   unclock: function(id) { this.member_action(id, 'unclock'); },
   
-  delete: function(id) { 
+  remove: function(id) { 
     this.activities_body().load(
       '/activities/' + id + '?' + this.opts_qs(), 
       {_method: 'delete'}
@@ -24,7 +24,7 @@ var Activities = {
 };
 
 var Plans = {
-  delete: function(id) { 
+  remove: function(id) { 
     this.plans_body().load(
       '/plans/' + id, 
       {_method: 'delete'}
@@ -35,7 +35,7 @@ var Plans = {
 };
 
 var Goals = {
-  delete: function(id) { 
+  remove: function(id) { 
     this.goals_body().load(
       '/goals/' + id, 
       {_method: 'delete'}

@@ -14,4 +14,4 @@
         - else
           = time_ago_in_words(Time.now, Time.now - (goal.duration - goal.completion).minutes)
           left
-      %td= link_to_function( 'x', "Goals.delete(#{goal.id})", :class => 'opts' ) 
+      %td= link_to_function( 'x', "Goals.remove(#{goal.id})", :class => 'opts' ) 

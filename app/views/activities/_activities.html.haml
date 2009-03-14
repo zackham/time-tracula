@@ -49,5 +49,5 @@
             = link_to_function( 'unclock', "Activities.unclock(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) if activity.time_in
           %td
           %td
-            = link_to_function( 'del', "Activities.delete(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) #, :onclick => %[return confirm('You sure?')] )
+            = link_to_function( 'del', "Activities.remove(#{activity.id})", :class => 'opts', :style => ('display:none' unless params[:show_opts]) ) #, :onclick => %[return confirm('You sure?')] )
         - last = activity

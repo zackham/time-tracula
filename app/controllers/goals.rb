@@ -1,5 +1,9 @@
 class Goals < Application
 
+  def index
+    show_all
+  end
+  
   def create(goal)
     @goal = Goal.create(goal.merge(:deadline => (Date.today + 1)))
     show_all

@@ -1,9 +1,24 @@
-= @activities.inject(0) {|m,a| m + a.elapsed_minutes}
+#summary
+  %h1
+    Activity for 
+    = @category
+  
+  %h2
+    Total time:
+    = sprintf( '%.02f', (@activities.inject(0) {|m,a| m + a.elapsed_minutes} / 60) )
+    hours
 
-%table
-  - for activity in @activities
+  %table
     %tr
-      %td= activity
-      %td= activity.time_in.formatted(:mytime)
-      %td= activity.time_out.formatted(:mytime)
-      %td= activity.elapsed_minutes
+      %th Activity
+      %th Day
+      %th Time in
+      %th Time out
+      %th Elapsed minutesd
+    - for activity in @activities
+      %tr
+        %td= activity
+        %td= activity.time_in.strftime('%D')
+        %td= activity.time_in.formatted(:mytime)
+        %td= activity.time_out.formatted(:mytime)
+        %td= activity.elapsed_minutes

@@ -3,6 +3,23 @@ class Activities < Application
     @js_includes << 'activities.js'
     
     set_activities
+    
+    
+    # goal orientedness 
+    
+    # for each day, go back 2 weeks
+    @goal_orientedness = []
+    for i in (0..14).to_a.reverse
+      go_hash = {}
+      go_hash[:time_clocked] = Activity.all_on_day(Date.today - i).completed.inject(0) {|m,a| m + a.elapsed_minutes}
+      go_hash[:time_clocked_in_goals] = Goal.all_on_day(Date.today - i).inject(0) {|m,g| m + g.clocked_out_completion}
+      go_hash[:goals_duration] = Goal.all_on_day(Date.today - i).inject(0) {|m,g| m + g.duration}
+      @goal_orientedness << go_hash
+    end
+    
+    
+    
+    
     display @activities
   end
   

@@ -4,4 +4,4 @@
     %tr
       %td= plan.category.name
       %td= plan.blurb
-      %td= link_to_function( 'x', "Plans.delete(#{plan.id})", :class => 'opts' ) #, :onclick => %[return confirm('You sure?')] )
+      %td= link_to_function( 'x', "Plans.remove(#{plan.id})", :class => 'opts' ) #, :onclick => %[return confirm('You sure?')] )
